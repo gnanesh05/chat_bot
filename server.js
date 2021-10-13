@@ -7,7 +7,6 @@ const Bot = require('node-telegram-bot-api');
 
 require('dotenv').config()
 const { TOKEN, SERVER_URL, NODE_ENV } = process.env
-const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`
 const URI = `/webhook/${TOKEN}`
 const WEBHOOK_URL = SERVER_URL + URI
 
@@ -23,11 +22,6 @@ else {
 
 
 app.use(bodyParser.json())
-
-//   const init = async () => {
-//     const res = await axios.get(`${TELEGRAM_API}/setWebhook?url=${WEBHOOK_URL}`)
-//     console.log(res.data)
-// }
 
 
 app.get('/', (req,res)=>{
@@ -78,7 +72,15 @@ bot.on('message', async(msg) => {
         -share your location
         -/display for displaying details`,
         { parse_mode: 'HTML', disable_web_page_preview: true }
+
       );
+      new_list = {
+        name: "",
+        email: "",
+        number: 0,
+        longitude: 0,
+        latitude: 0
+      }
       }
   
       if(input.includes(commands2)){
@@ -133,7 +135,7 @@ bot.on('message', async(msg) => {
             text = "please enter a number";
          }
 
-        if(number.length !=10)
+        if(number.length !== 10)
         {
           text = "please enter valid phone number";
         }
@@ -153,10 +155,19 @@ bot.on('message', async(msg) => {
    }
   
    if(commands5.includes(input)){
+     var str;
+     if(new_list.name !== "" && new_list.email !== "" && new_list.number !==0 && new_list.latitude !==0 && new_list.longitude !==0)
+     {
+        str = `Hi ${new_list.name}, your email is ${new_list.email}, your phone number is ${new_list.number}. and you're at 
+        (${new_list.latitude} , ${new_list.longitude})`
+     }
+     else
+     {
+       str = `a missing value found. Enter full details`
+     }
    await bot.sendMessage(
       msg.chat.id,
-      `Hi ${new_list.name}, your email is ${new_list.email}, your phone number is ${new_list.number}. and you're at 
-      (${new_list.latitude} , ${new_list.longitude})`,
+      str,
       { parse_mode: 'HTML', disable_web_page_preview: true }
     );
    }
