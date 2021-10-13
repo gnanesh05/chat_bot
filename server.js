@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const axios = require('axios')
 const bodyParser = require('body-parser')
-var Bot = require('node-telegram-bot-api');
+const packageInfo = require('./package.json');
+const Bot = require('node-telegram-bot-api');
 
 require('dotenv').config()
 const { TOKEN, SERVER_URL, NODE_ENV } = process.env
@@ -28,6 +29,10 @@ app.use(bodyParser.json())
 //     console.log(res.data)
 // }
 
+
+app.get('/', (req,res)=>{
+  res.json({ version: packageInfo.version });
+})
 
 
 app.post(URI, (req, res) => {
