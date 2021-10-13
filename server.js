@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const axios = require('axios')
 const bodyParser = require('body-parser')
 const packageInfo = require('./package.json');
 const Bot = require('node-telegram-bot-api');
@@ -66,10 +65,10 @@ bot.on('message', async(msg) => {
         msg.chat.id,
         `Welcome!\n
         - Enter your name, phone and email address\n
-        -/name for entering name
-        -/email for entering email
-        -/phone for entering number
-        -share your location
+        -/name for entering name,  eg. /name name.
+        -/email for entering email,  eg. /email email.
+        -/phone for entering number, eg. /phone number.
+        -share your location, just share location.
         -/display for displaying details`,
         { parse_mode: 'HTML', disable_web_page_preview: true }
 
@@ -163,7 +162,7 @@ bot.on('message', async(msg) => {
      }
      else
      {
-       str = `a missing value found. Enter full details`
+       str = `missing details. PLease Enter full details`
      }
    await bot.sendMessage(
       msg.chat.id,
@@ -186,8 +185,6 @@ bot.on('location', async(msg)=>{
   catch (error) {
     console.error(error.message);
   }
-  // console.log(msg.location.latitude);
-  // console.log(msg.location.longitude);
 
 
 })
