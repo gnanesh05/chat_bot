@@ -52,7 +52,9 @@ app.post(URI, (req, res) => {
 var new_list = {
   name: "",
   email: "",
-  number: 0
+  number: 0,
+  longitude: 0,
+  latitude: 0
 }
 
 bot.on('message', async(msg) => {
@@ -73,6 +75,7 @@ bot.on('message', async(msg) => {
         -/name for entering name
         -/email for entering email
         -/phone for entering number
+        -share your location
         -/display for displaying details`,
         { parse_mode: 'HTML', disable_web_page_preview: true }
       );
@@ -152,7 +155,8 @@ bot.on('message', async(msg) => {
    if(commands5.includes(input)){
    await bot.sendMessage(
       msg.chat.id,
-      `Hi ${new_list.name}, your email is ${new_list.email}, and your phone number is ${new_list.number}`,
+      `Hi ${new_list.name}, your email is ${new_list.email}, your phone number is ${new_list.number}. and you're at 
+      (${new_list.latitude} , ${new_list.longitude})`,
       { parse_mode: 'HTML', disable_web_page_preview: true }
     );
    }
@@ -161,6 +165,23 @@ bot.on('message', async(msg) => {
   }
 
 });
+
+bot.on('location', async(msg)=>{
+  try 
+  {
+    new_list.longitude = msg.location.latitude;
+    new_list.latitude = msg.location.longitude;
+  } 
+  catch (error) {
+    console.error(error.message);
+  }
+  // console.log(msg.location.latitude);
+  // console.log(msg.location.longitude);
+
+
+})
+
+
 app.listen(process.env.PORT || 3000 , ()=>{
       
     try {
